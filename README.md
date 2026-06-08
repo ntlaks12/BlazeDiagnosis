@@ -113,3 +113,74 @@ Blaze Diagnostics learning resources are available at:
 The full internship-wide resource list is maintained in the `internship-training-and-docs` repository under:
 
 `13-resource-index/self-paced-resource-urls.md`
+
+
+
+## Improved Setup Instructions (Student Guide)
+
+This section explains how new students should set up and run the project.
+
+
+### Step 1: Install Dependencies
+
+After cloning the repository, run:
+
+`npm install`
+
+
+This installs all required packages for the project.
+
+
+
+### Step 2: Start the Project
+
+Run:
+`npm run dev`
+
+Then open your browser and go to:
+
+http://localhost:3000
+
+
+## Step 3: Important Development Rules
+
+- Always read `STUDENT_START_HERE.md` before starting work  
+- Never push directly to `main`  
+- Always create a new branch before making changes:
+
+git checkout -b feature-name
+
+- Always update your local repository before starting:
+git pull origin main
+
+
+---
+
+## Step 4: Common Setup Issues
+
+**Problem** Dependencies not installing  
+Fix:
+`rm -rf node_modules` 
+`npm install` 
+
+
+**Problem:** Port already in use  
+Fix:
+`npx kill-port 3000`
+
+
+**Problem:** Git push rejected  
+Fix:
+`git pull origin main`
+
+
+
+## Step 5: Tech Stack Overview
+
+- Frontend: Next.js, React, TypeScript, Tailwind CSS  
+- Backend: Node.js, TypeScript  
+- Database: PostgreSQL  
+- ORM: Prisma  
+- Version Control: GitHub  
+
+
