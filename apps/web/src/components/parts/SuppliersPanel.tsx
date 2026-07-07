@@ -16,6 +16,7 @@ export const SuppliersPanel: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [search, setSearch] = useState('');
 
   const [form, setForm] = useState({
     name: '',
@@ -71,7 +72,11 @@ export const SuppliersPanel: React.FC = () => {
     } finally {
       setIsPending(false);
     }
-  };
+  }
+
+  const filteredSuppliers = suppliers.filter((supplier) =>
+    supplier.name.toLowerCase().includes(search.toLowerCase())
+);  
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
@@ -101,6 +106,21 @@ export const SuppliersPanel: React.FC = () => {
       </form>
 
       <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Active System Suppliers</h3>
+      
+      
+      <input
+  type="text"
+  placeholder="Search suppliers..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{
+    width: '100%',
+    padding: '8px',
+    marginBottom: '12px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+  }}
+/>
       {loading ? (
         <p>Loading database registry...</p>
       ) : (
@@ -114,7 +134,7 @@ export const SuppliersPanel: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {suppliers.map((sup) => (
+            {filteredSuppliers.map((sup) => (
               <tr key={sup.id} style={{ borderBottom: '1px solid #eee' }}>
                 <td style={{ padding: '8px', fontWeight: sup.preferred ? 'bold' : 'normal' }}>
                   {sup.name} {sup.preferred && '⭐'}

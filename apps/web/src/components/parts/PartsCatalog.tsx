@@ -19,6 +19,8 @@ export const PartsCatalogPanel: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorText, setErrorText] = useState<string | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const lowStockThreshold = 5;
+  const [searchItem,setSearchTerm] = useState('');
 
   const [form, setForm] = useState({
     name: '',
@@ -80,6 +82,18 @@ export const PartsCatalogPanel: React.FC = () => {
     }
   };
 
+  const totalParts = catalog.length;
+
+  const lowStockParts = catalog.filter(
+    (item) => 
+      Number(item.quantityOnHand) > 0 &&
+      Number(item.quantityOnHand) <= lowStockThreshold
+  ).length;
+
+  const outOfStockParts = catalog.filter(
+    (item) => Number(item.quantityOnHand) === 0 
+  ). length; 
+
   const resetForm = () => {
     setForm({
       name: '',
@@ -93,6 +107,12 @@ export const PartsCatalogPanel: React.FC = () => {
       quantityOnHand: '0.00',
     });
   };
+
+  const filteredCatalog = catalog.filter((item))=>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.partNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    (item.brand ??'').toLowerCase().includes(searchTerm.toLowerCase())
+); 
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
@@ -125,11 +145,58 @@ export const PartsCatalogPanel: React.FC = () => {
         </button>
       </form>
 
-      <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Active System Stock Profiles</h3>
+      <div 
+      style={{
+        display: "grid",
+        gridTemplateColoumns: "repeat(3, 1fr)",
+        gap: "12px",
+        marginBottom: "20px", 
+      }}
+    >
+      <div 
+      style ={{
+        background: "#eff6ff",
+        padding: "16px",
+        borderRadius: "6px"
+        border: "1px solid #bfdbfe",
+      }}
+      >
+        <h4>TotalParts</h4>
+        <h2>{totalParts</h2>
+    </div>
+
+    <div 
+    style ={{
+      background: "#fee2e2",
+      padding: "16px",
+      borderRadius: "6px",
+      border: "1px solid #fecaca",
+    }}
+    >
+      <h4>Out of Stock</h4>
+      <h2>{outOfStockParts}</h2>
+      </div>
+    </div>
+
+
+      <h3 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Active System Stock Profiles ({filteredCatalog.length})</h3>
+      <input 
+      type = "text"
+      placeholder = "Search by Part Name, Part Number or Brand...."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.vehicle)}
+      style={{
+        width: '100%',
+        padding: '10px',
+        marginBottom: '15px',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+      }}
+      /> 
       {loading ? (
         <p>Parsing database registry...</p>
       ) : catalog.length === 0 ? (
-        <p style={{ color: '#6b7280', fontStyle: 'italic' }}>No parts registered yet.</p>
+        <p style={{ color: '#6b7280', fontStyle: 'italic' }}>No matching parts found.</p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
